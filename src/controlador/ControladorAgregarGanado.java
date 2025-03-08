@@ -41,7 +41,7 @@ public class ControladorAgregarGanado implements ActionListener {
     DefaultTableModel modeloT = new DefaultTableModel();
     
     //VERIFICAR BIEN EL NOMBRE DE LA TABLA A USAR
-    objetoVista.tablaMostrarLotes.setModel(modeloT); // Asegúrate de usar el nombre correcto de la tabla en la vista
+    objetoVista.tablaMostrarLotes.setModel(modeloT);
     
     // Agregar columnas a la tabla
     modeloT.addColumn("NOMBRE");
@@ -72,8 +72,8 @@ public class ControladorAgregarGanado implements ActionListener {
     public void actionPerformed(ActionEvent e) {
        if (e.getSource()==objetoVista.btnAgregar)
        {
-         String id = objetoVista.txtId.getText().trim();  // Asegúrate de que no haya espacios innecesarios
-         String fN = objetoVista.txtFechaNacimiento.getText().trim();  // Asegúrate de que no haya espacios innecesarios
+         String id = objetoVista.txtId.getText().trim();  
+         String fN = objetoVista.txtFechaNacimiento.getText().trim(); 
 
          // Comprobar que la fecha no esté vacía antes de intentar parsearla
          if (fN.isEmpty()) {
@@ -88,7 +88,7 @@ public class ControladorAgregarGanado implements ActionListener {
 
              String natal = (String) objetoVista.jComboBox2.getSelectedItem();
              String estado = (String) objetoVista.jComboBox1.getSelectedItem();
-             String lote = objetoVista.txtLote.getText().trim();  // Asegúrate de que no haya espacios innecesarios
+             String lote = objetoVista.txtLote.getText().trim();  
 
              if (objetoDAO.validarLote(lote)) {
                  objetoDAO.insertarGanado(id, fechaNacimiento, natal, estado, lote);
