@@ -19,6 +19,8 @@ import vista.AgregarGanado;
  *
  * @author josed
  */
+
+//vale
 public class ControladorAgregarGPL implements ActionListener {
     Ganado vaca = new Ganado();
     GanadoDAO objetoDAO= new GanadoDAO();
