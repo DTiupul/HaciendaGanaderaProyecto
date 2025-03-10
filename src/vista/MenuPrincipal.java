@@ -16,7 +16,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import modelo.Ganado;
 import modelo.LacteosDao;
-
+import modelo.FacadeDAO;
 import modelo.ReportesDao;
 
 /**
@@ -30,7 +30,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
-        
+        actualizarTablaAuto();
     }
 
     /**
@@ -58,10 +58,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mniAgregar = new javax.swing.JMenuItem();
-        mniVender = new javax.swing.JMenuItem();
         mniModificar = new javax.swing.JMenuItem();
-        mniAgregarAPL = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        mniVender = new javax.swing.JMenuItem();
+        mniAgregarAPL = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -147,14 +147,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(mniAgregar);
 
-        mniVender.setText("Vender");
-        mniVender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mniVenderActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mniVender);
-
         mniModificar.setText("Eliminar");
         mniModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,17 +155,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(mniModificar);
 
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Gestionar");
+
+        mniVender.setText("Vender");
+        mniVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniVenderActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mniVender);
+
         mniAgregarAPL.setText("AgregarAnimalesProduccionLactea");
         mniAgregarAPL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniAgregarAPLActionPerformed(evt);
             }
         });
-        jMenu1.add(mniAgregarAPL);
+        jMenu2.add(mniAgregarAPL);
 
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Gestionar");
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Reportes");
@@ -216,7 +217,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         AgregarGanado aG= new AgregarGanado();
         this.setVisible(false);
-        GanadoDAO objetoDAO= new GanadoDAO();
+        FacadeDAO objetoDAO= new FacadeDAO();
         ControladorAgregarGanado controladorAG= new ControladorAgregarGanado(aG,objetoDAO);
         aG.setVisible(true);
               
@@ -226,7 +227,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         AgregarGPL aGPL= new AgregarGPL();
         this.setVisible(false);
-        GanadoDAO objetoDAO= new GanadoDAO();
+        FacadeDAO objetoDAO= new FacadeDAO();
         ControladorAgregarGPL controladorAGPL= new ControladorAgregarGPL(aGPL,objetoDAO);
         aGPL.setVisible(true);
     }//GEN-LAST:event_mniAgregarAPLActionPerformed
@@ -235,7 +236,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Vender vender= new Vender();
         this.setVisible(false);
-        GanadoDAO objetoDAO= new GanadoDAO();
+        FacadeDAO objetoDAO= new FacadeDAO();
         ControladorVender controladorAGPL= new ControladorVender(vender,objetoDAO);
         vender.setVisible(true);
     }//GEN-LAST:event_mniVenderActionPerformed
@@ -244,7 +245,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
           FrmReportes aG= new FrmReportes();
         this.setVisible(false);
-        ReportesDao objetoDAO= new ReportesDao();
+        FacadeDAO objetoDAO= new FacadeDAO();
         ControladorReportes controladorR= new ControladorReportes(aG,objetoDAO);
         aG.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -253,7 +254,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
        FrmLacteos aL= new FrmLacteos();
        this.setVisible(false);
-       LacteosDao objetoDao= new LacteosDao();
+       FacadeDAO objetoDao= new FacadeDAO();
        ControladorLacteo controladorL= new ControladorLacteo(aL,objetoDao);
        aL.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -298,7 +299,40 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
        
     }//GEN-LAST:event_mniModificarActionPerformed
-    
+    private void actualizarTablaAuto()
+    {
+        DefaultTableModel modeloT = new DefaultTableModel();
+
+        // Asignar el modelo a la tabla directamente
+        tablaTodos.setModel(modeloT);
+
+        // Agregar las columnas correspondientes
+        modeloT.addColumn("ID");
+        modeloT.addColumn("FECHA DE NACIMIENTO");
+        modeloT.addColumn("NATAL");
+        modeloT.addColumn("ESTADO");
+        modeloT.addColumn("LOTE");
+
+        // Obtener la lista de ganado desde el DAO
+        GanadoDAO ganadoDAO = new GanadoDAO();
+        List<Ganado> listaGanados = ganadoDAO.obtenerGanado();
+
+        // Recorrer la lista y agregar los datos a la tabla
+        for (Ganado ganado : listaGanados) {
+            Object[] fila = new Object[5]; // 5 columnas
+            fila[0] = ganado.getId();
+            fila[1] = ganado.getFechaNacimiento();  // Puedes formatear la fecha si es necesario
+            fila[2] = ganado.getNatal();
+            fila[3] = ganado.getEstadoV();
+            fila[4] = ganado.getLote();
+
+            modeloT.addRow(fila);
+        }
+
+        // Forzar la actualización visual de la tabla
+        tablaTodos.repaint();
+        tablaTodos.revalidate();
+    }
     /**
      * @param args the command line arguments
      */

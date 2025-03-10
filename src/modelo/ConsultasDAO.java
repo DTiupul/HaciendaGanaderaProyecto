@@ -13,91 +13,75 @@ import modelo.Conexion;
 import vista.FrmLogin;
 import vista.MenuPrincipal;
 
-/**
- *
- * @author josed
- */
-public class ConsultasDAO {
+
     
     
-    public void guardarUsuario(String usuario,String clave)
-    {
-        
-        Conexion objCon= new Conexion();
-        
-        BasicDBObject documento= new BasicDBObject();
-        if(usuario.isEmpty()||clave.isEmpty())
-        {
-        JOptionPane.showMessageDialog(null, "Ingrese Los Datos");    
+   public class ConsultasDAO {
+    
+    
+    private static ConsultasDAO instancia;  // Única instancia de la clase
+
+    // Constructor privado para evitar instanciación directa
+    private ConsultasDAO() {}
+
+    // Método estático para obtener la instancia única
+    public static ConsultasDAO getInstancia() {
+        if (instancia == null) {
+            instancia = new ConsultasDAO();
         }
-        else
-        {
-        if(verificarUsuario(usuario)==true)
-        {
-        JOptionPane.showMessageDialog(null, "Usuario Ya Agregado");
-        }
-        else{
-        documento.put("usuario",usuario);
-        documento.put("clave", clave);
-        
-        objCon.coleccion1.insert(documento);
-        JOptionPane.showMessageDialog(null, "Usuario Registrado");
-        }
-        }
-        
-        
+        return instancia;
     }
-    
-    
-    public void accederUsuario(String id, String clave,FrmLogin frmLogin)
-    {
-    Conexion objCon = new Conexion();
 
-    // Crear la consulta para buscar por usuario
-    BasicDBObject queryColeccion = new BasicDBObject();
-    queryColeccion.put("usuario", id);
-
-    // Buscar el documento correspondiente al usuario en la colección
-    BasicDBObject usuarioEnColeccion = (BasicDBObject) objCon.coleccion1.findOne(queryColeccion);
-
-    // Verificar si se encontró el usuario
-    if (usuarioEnColeccion != null) {
-        // Recuperar la contraseña almacenada en la base de datos
-        String claveGuardada = usuarioEnColeccion.getString("clave");
-
-        // Comparar la contraseña ingresada con la almacenada
-        if (clave.equals(claveGuardada)) {
-            JOptionPane.showMessageDialog(null, "Acceso concedido. Bienvenido, " + id + "!");
-            frmLogin.setVisible(false);
-            
-            MenuPrincipal menuPrincipal = new MenuPrincipal();
-            menuPrincipal.setVisible(true);
+    public void guardarUsuario(String usuario, String clave) {
+        Conexion objCon = new Conexion();
+        
+        BasicDBObject documento = new BasicDBObject();
+        if (usuario.isEmpty() || clave.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese Los Datos");
         } else {
-            JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
+            if (verificarUsuario(usuario)) {
+                JOptionPane.showMessageDialog(null, "Usuario Ya Agregado");
+            } else {
+                documento.put("usuario", usuario);
+                documento.put("clave", clave);
+                objCon.coleccion1.insert(documento);
+                JOptionPane.showMessageDialog(null, "Usuario Registrado");
+            }
         }
-    } else {
-        // Si no se encuentra el usuario
-        JOptionPane.showMessageDialog(null, "Usuario no encontrado.");
     }
-    
-    
+
+    public void accederUsuario(String id, String clave, FrmLogin frmLogin) {
+        Conexion objCon = new Conexion();
+        
+        BasicDBObject queryColeccion = new BasicDBObject();
+        queryColeccion.put("usuario", id);
+        
+        BasicDBObject usuarioEnColeccion = (BasicDBObject) objCon.coleccion1.findOne(queryColeccion);
+        
+        if (usuarioEnColeccion != null) {
+            String claveGuardada = usuarioEnColeccion.getString("clave");
+            if (clave.equals(claveGuardada)) {
+                JOptionPane.showMessageDialog(null, "Acceso concedido. Bienvenido, " + id + "!");
+                frmLogin.setVisible(false);
+                
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario no encontrado.");
+        }
     }
-    
+
     public boolean verificarUsuario(String id) {
-    Conexion objCon = new Conexion();
-    BasicDBObject queryColeccion = new BasicDBObject();
-    queryColeccion.put("usuario", id);
-    
-    BasicDBObject usu = (BasicDBObject) objCon.coleccion1.findOne(queryColeccion);
+        Conexion objCon = new Conexion();
+        BasicDBObject queryColeccion = new BasicDBObject();
+        queryColeccion.put("usuario", id);
+        
+        BasicDBObject usu = (BasicDBObject) objCon.coleccion1.findOne(queryColeccion);
+        return usu != null;
+    }
+}
     
 
-    return usu != null;  // Retorna true si el auto está en la colección 1 (ya rentado)
-    }
-    
-    
-    
-     
-    
-    
-    
-}

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import modelo.FacadeDAO;
 import modelo.Ganado;
 import modelo.LacteosDao;
 import vista.FrmLacteos;
@@ -13,9 +14,9 @@ import vista.FrmLacteos;
 
 public class ControladorLacteo implements ActionListener{
     FrmLacteos objetoVista=new FrmLacteos();
-    LacteosDao objetoDao= new LacteosDao(); 
+    FacadeDAO objetoDao= new FacadeDAO(); 
     
-    public ControladorLacteo( FrmLacteos vista, LacteosDao dao)
+    public ControladorLacteo( FrmLacteos vista, FacadeDAO dao)
   {
    objetoVista=vista;
    objetoDao=dao;

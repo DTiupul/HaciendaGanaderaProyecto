@@ -9,9 +9,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.FacadeDAO;
 import modelo.Ganado;
 import modelo.GanadoDAO;
-import vista.Eliminar;
+import vista.FrmEliminar;
 import vista.Vender;
 
 /**
@@ -20,36 +21,17 @@ import vista.Vender;
  */
 public class ControladorEliminar implements ActionListener{
     
-    GanadoDAO objetoDAO= new GanadoDAO();
-    Eliminar objetoVista= new Eliminar();
+   FacadeDAO objetoDAO= new FacadeDAO();
+    FrmEliminar objetoVista= new FrmEliminar();
     
     
-    public ControladorEliminar(Eliminar vista,GanadoDAO dao)
+    public ControladorEliminar(FrmEliminar vista,FacadeDAO dao)
     {
         objetoVista=vista;
         objetoDAO=dao;
         objetoVista.btnMostrar.addActionListener(this);
         objetoVista.btnEliminar.addActionListener(this);
     }
-    
-   
-//    public void eliminarAuto(){
-//        int filaSeleccionada = objetoVista.tablaMostrar.getSelectedRow();
-//        objetoVista.tablaMostrar.getSelectedRow();
-//        if (filaSeleccionada != -1) {
-//            String id = (String) objetoVista.tablaMostrar.getValueAt(filaSeleccionada, 0);
-//            boolean eliminado = objetoDAO.eliminarVaca(id);
-//        if (eliminado) {
-//            DefaultTableModel model = (DefaultTableModel) objetoVista.tablaMostrar.getModel();
-//            model.removeRow(filaSeleccionada);
-//            JOptionPane.showMessageDialog(null, "Auto eliminado exitosamente");
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Error al eliminar el auto");
-//        }
-//    } else {
-//        JOptionPane.showMessageDialog(null, "Seleccione un auto para eliminar");
-//    }
-//    }
 
     public void mostrarVacas()
     {
@@ -86,14 +68,47 @@ public class ControladorEliminar implements ActionListener{
         objetoVista.tablaMostrar.repaint();
         objetoVista.tablaMostrar.revalidate();
     }
+    
+    public void eliminarVaca()
+    {
+        int filaSeleccionada = objetoVista.tablaMostrar.getSelectedRow();
+        objetoVista.tablaMostrar.getSelectedRow();
+        
+        
+        if (filaSeleccionada != -1) 
+        {
+            
+            String id = (String) objetoVista.tablaMostrar.getValueAt(filaSeleccionada, 0);
+
+            
+                boolean rentado = objetoDAO.eliminarVaca(id);
+                 
+                //REMUEVE LA FILA DONDE SE ENCONTRABA EL OBJETO, UNA VEZ USADO EL ELEMENTO QUE SELECCIONAMOS
+                if (rentado) {
+                DefaultTableModel model = (DefaultTableModel) objetoVista.tablaMostrar.getModel();
+                model.removeRow(filaSeleccionada);
+                
+                //VERIFICAR SI SE REALIZO CORRECTAMENTE O NO
+                JOptionPane.showMessageDialog(null, "Vaca eliminada exitosamente");
+                } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar vaca");
+                }
+
+        } else {    
+        //POR SI NO SE SELECCIONO UNA OPCION
+        JOptionPane.showMessageDialog(null, "Seleccione una vaca para eliminar");
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==objetoVista.btnMostrar)
         {
-            mostrarVacas();
-            
-            
+            mostrarVacas();    
+        }
+        if(e.getSource()==objetoVista.btnEliminar)
+        {
+            eliminarVaca();
         }
     }
     

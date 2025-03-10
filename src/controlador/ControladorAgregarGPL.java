@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package controlador;
 
 import java.awt.event.ActionEvent;
@@ -9,23 +6,22 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.FacadeDAO;
 import modelo.Ganado;
 import modelo.GanadoDAO;
 import modelo.Lotes;
 import vista.AgregarGPL;
 import vista.AgregarGanado;
 
-/**
- *
- * @author josed
- */
+
 public class ControladorAgregarGPL implements ActionListener {
     Ganado vaca = new Ganado();
-    GanadoDAO objetoDAO= new GanadoDAO();
+    FacadeDAO objetoDAO= new FacadeDAO();
+    //GanadoDAO objetoDAO1= new GanadoDAO();
     AgregarGPL objetoVista= new AgregarGPL();
     Lotes lote= new Lotes();
     
-    public ControladorAgregarGPL(AgregarGPL vista, GanadoDAO dao)
+    public ControladorAgregarGPL(AgregarGPL vista, FacadeDAO dao)
     {
         objetoVista=vista;
         objetoDAO= dao;
@@ -147,8 +143,6 @@ public class ControladorAgregarGPL implements ActionListener {
            List<Ganado> listaGanados2 = objetoDAO.obtenerGanadoPPL();
            mostrarGanadosEnTabla2(listaGanados2);
        }
-    }
-    
-    
+    }    
     
 }

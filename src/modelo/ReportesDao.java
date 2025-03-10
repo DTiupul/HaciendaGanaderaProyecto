@@ -41,7 +41,7 @@ public class ReportesDao {
     }
 
     // Método para obtener ganado
-    public List<Ganado> obtenerGanado() {
+    public List<Ganado> obtenerGanadoT() {
         List<Ganado> listaganado1 = new ArrayList<>();
         Conexion objCon = new Conexion();
         DBCursor cursor = objCon.coleccion2.find();

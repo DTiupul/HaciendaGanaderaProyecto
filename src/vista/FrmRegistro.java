@@ -145,7 +145,7 @@ public class FrmRegistro extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         
-        ConsultasDAO objetoDAO = new ConsultasDAO(); 
+        ConsultasDAO objetoDAO = ConsultasDAO.getInstancia(); 
         objetoDAO.guardarUsuario(txtUsuario.getText(),txtContraseña.getText() );
         
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -155,7 +155,7 @@ public class FrmRegistro extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         FrmRegistro registro = new FrmRegistro(); // Crear la instancia del formulario
-        ConsultasDAO objetoDAO = new ConsultasDAO(); // Crear el DAO
+        ConsultasDAO objetoDAO =  ConsultasDAO.getInstancia(); // Crear el DAO
         //ControladorLogin controlador1 = new ControladorLogin(registro, objetoDAO);
         
         /* Set the Nimbus look and feel */

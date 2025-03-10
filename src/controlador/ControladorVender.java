@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.FacadeDAO;
 import modelo.Ganado;
 import modelo.GanadoDAO;
 import modelo.Lotes;
@@ -21,12 +22,12 @@ import vista.Vender;
  */
 public class ControladorVender implements ActionListener{
     
-    Ganado vaca = new Ganado();
-    GanadoDAO objetoDAO= new GanadoDAO();
+   Ganado vaca = new Ganado();
+    FacadeDAO objetoDAO= new FacadeDAO();
     Vender objetoVista= new Vender();
     
     
-    public ControladorVender(Vender vista, GanadoDAO dao)
+    public ControladorVender(Vender vista, FacadeDAO dao)
     {
         objetoVista=vista;
         objetoDAO= dao;
